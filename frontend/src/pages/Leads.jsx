@@ -26,7 +26,7 @@ import {
 import api from '../services/api';
 import LeadModal from '../components/LeadModal';
 
-// ---- Status filter options ----
+// ---- Filter options ----
 const STATUS_OPTIONS = [
   'All',
   'New',
@@ -35,6 +35,23 @@ const STATUS_OPTIONS = [
   'Proposal Sent',
   'Won',
   'Lost',
+];
+
+const SOURCE_OPTIONS = [
+  'All',
+  'Website',
+  'Referral',
+  'LinkedIn',
+  'Cold Call',
+  'Email Campaign',
+  'Other',
+];
+
+const SALESPERSON_OPTIONS = [
+  'All',
+  'Alice Johnson',
+  'Bob Williams',
+  'Charlie Davis',
 ];
 
 /**
@@ -64,6 +81,8 @@ const Leads = () => {
   const [error, setError] = useState('');
   const [search, setSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState('All');
+  const [sourceFilter, setSourceFilter] = useState('All');
+  const [salespersonFilter, setSalespersonFilter] = useState('All');
 
   // Modal state
   const [showModal, setShowModal] = useState(false);
@@ -78,6 +97,8 @@ const Leads = () => {
       setLoading(true);
       const params = {};
       if (statusFilter !== 'All') params.status = statusFilter;
+      if (sourceFilter !== 'All') params.lead_source = sourceFilter;
+      if (salespersonFilter !== 'All') params.assigned_salesperson = salespersonFilter;
       if (search.trim()) params.search = search.trim();
 
       const { data } = await api.get('/leads', { params });
@@ -89,7 +110,7 @@ const Leads = () => {
     } finally {
       setLoading(false);
     }
-  }, [statusFilter, search]);
+  }, [statusFilter, sourceFilter, salespersonFilter, search]);
 
   useEffect(() => {
     fetchLeads();
@@ -148,7 +169,7 @@ const Leads = () => {
           </InputGroup>
         </Col>
 
-        <Col xs={12} sm={6} md={3} lg={2}>
+        <Col xs={6} sm={4} md={2}>
           <Form.Select
             className="form-input-custom"
             value={statusFilter}
@@ -162,7 +183,35 @@ const Leads = () => {
           </Form.Select>
         </Col>
 
-        <Col xs={12} sm={6} md={4} lg={6} className="d-flex justify-content-md-end">
+        <Col xs={6} sm={4} md={2}>
+          <Form.Select
+            className="form-input-custom"
+            value={sourceFilter}
+            onChange={(e) => setSourceFilter(e.target.value)}
+          >
+            {SOURCE_OPTIONS.map((s) => (
+              <option key={s} value={s}>
+                {s === 'All' ? 'All Sources' : s}
+              </option>
+            ))}
+          </Form.Select>
+        </Col>
+
+        <Col xs={6} sm={4} md={2}>
+          <Form.Select
+            className="form-input-custom"
+            value={salespersonFilter}
+            onChange={(e) => setSalespersonFilter(e.target.value)}
+          >
+            {SALESPERSON_OPTIONS.map((s) => (
+              <option key={s} value={s}>
+                {s === 'All' ? 'All Salespersons' : s}
+              </option>
+            ))}
+          </Form.Select>
+        </Col>
+
+        <Col xs={6} sm={12} md={2} className="d-flex justify-content-md-end">
           <Button className="btn-add-lead" onClick={openCreateModal}>
             <HiOutlinePlus className="me-2" />
             Add New Lead

@@ -12,13 +12,67 @@
  * CSS Custom Properties (Design Tokens)
  * ============================================ */
 :root {
-  /* Primary Palette */
+  /* Primary Palette (shared) */
   --primary-600: #4f46e5;
   --primary-500: #6366f1;
   --primary-400: #818cf8;
   --primary-300: #a5b4fc;
 
-  /* Neutral Palette */
+  /* Semantic Colors (shared) */
+  --success: #10b981;
+  --danger:  #ef4444;
+  --warning: #f59e0b;
+  --info:    #3b82f6;
+
+  /* Layout (shared) */
+  --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --border-radius: 12px;
+  --border-radius-lg: 16px;
+  --transition-fast: 150ms ease;
+  --transition-base: 250ms ease;
+  --transition-slow: 350ms ease;
+
+  /* ---- LIGHT THEME (default) ---- */
+  --gray-50:  #f8fafc;
+  --gray-100: #1e293b;
+  --gray-200: #334155;
+  --gray-300: #475569;
+  --gray-400: #64748b;
+  --gray-500: #94a3b8;
+  --gray-600: #cbd5e1;
+  --gray-700: #e2e8f0;
+  --gray-800: #f1f5f9;
+  --gray-900: #f8fafc;
+  --gray-950: #ffffff;
+
+  --surface-primary:   #f1f5f9;
+  --surface-secondary: #ffffff;
+  --surface-card:      rgba(255, 255, 255, 0.85);
+  --surface-glass:     rgba(0, 0, 0, 0.04);
+  --border-color:      rgba(0, 0, 0, 0.1);
+  --text-primary:      #0f172a;
+  --text-heading:      #1e293b;
+  --text-on-card:      #334155;
+  --navbar-bg:         rgba(255, 255, 255, 0.88);
+  --table-header-bg:   rgba(0, 0, 0, 0.03);
+  --table-hover-bg:    rgba(0, 0, 0, 0.02);
+  --input-text:        #1e293b;
+  --close-btn-filter:  none;
+  --option-bg:         #ffffff;
+  --option-text:       #1e293b;
+  --alert-danger-bg:   rgba(239, 68, 68, 0.08);
+  --alert-danger-border: rgba(239, 68, 68, 0.2);
+  --alert-danger-text: #dc2626;
+
+  --shadow-sm:  0 1px 2px rgba(0, 0, 0, 0.06);
+  --shadow-md:  0 4px 6px -1px rgba(0, 0, 0, 0.08);
+  --shadow-lg:  0 10px 25px -3px rgba(0, 0, 0, 0.1);
+  --shadow-xl:  0 20px 50px -12px rgba(0, 0, 0, 0.12);
+  --shadow-glow: 0 0 40px rgba(99, 102, 241, 0.08);
+}
+
+/* ---- DARK THEME ---- */
+:root[data-theme='dark'] {
   --gray-50:  #f8fafc;
   --gray-100: #f1f5f9;
   --gray-200: #e2e8f0;
@@ -31,37 +85,30 @@
   --gray-900: #0f172a;
   --gray-950: #020617;
 
-  /* Semantic Colors */
-  --success: #10b981;
-  --danger:  #ef4444;
-  --warning: #f59e0b;
-  --info:    #3b82f6;
-
-  /* Surfaces */
   --surface-primary:   #0f172a;
   --surface-secondary: #1e293b;
   --surface-card:      rgba(30, 41, 59, 0.7);
   --surface-glass:     rgba(255, 255, 255, 0.05);
+  --border-color:      rgba(255, 255, 255, 0.08);
+  --text-primary:      #f1f5f9;
+  --text-heading:      #ffffff;
+  --text-on-card:      #e2e8f0;
+  --navbar-bg:         rgba(15, 23, 42, 0.85);
+  --table-header-bg:   rgba(255, 255, 255, 0.03);
+  --table-hover-bg:    rgba(255, 255, 255, 0.03);
+  --input-text:        #ffffff;
+  --close-btn-filter:  invert(1) grayscale(100%) brightness(200%);
+  --option-bg:         #1e293b;
+  --option-text:       #ffffff;
+  --alert-danger-bg:   rgba(239, 68, 68, 0.12);
+  --alert-danger-border: rgba(239, 68, 68, 0.25);
+  --alert-danger-text: #fca5a5;
 
-  /* Typography */
-  --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-
-  /* Borders */
-  --border-color: rgba(255, 255, 255, 0.08);
-  --border-radius: 12px;
-  --border-radius-lg: 16px;
-
-  /* Shadows */
   --shadow-sm:  0 1px 2px rgba(0, 0, 0, 0.3);
   --shadow-md:  0 4px 6px -1px rgba(0, 0, 0, 0.4);
   --shadow-lg:  0 10px 25px -3px rgba(0, 0, 0, 0.5);
   --shadow-xl:  0 20px 50px -12px rgba(0, 0, 0, 0.6);
   --shadow-glow: 0 0 40px rgba(99, 102, 241, 0.15);
-
-  /* Transitions */
-  --transition-fast: 150ms ease;
-  --transition-base: 250ms ease;
-  --transition-slow: 350ms ease;
 }
 
 /* ============================================
@@ -82,10 +129,11 @@ html {
 body {
   font-family: var(--font-family);
   background-color: var(--surface-primary);
-  color: var(--gray-100);
+  color: var(--text-primary);
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 /* ============================================
@@ -191,10 +239,10 @@ body {
   background: var(--surface-glass) !important;
   border: 1px solid var(--border-color) !important;
   border-radius: 10px !important;
-  color: #fff !important;
+  color: var(--input-text) !important;
   padding: 0.7rem 1rem !important;
   font-size: 0.95rem !important;
-  transition: border-color var(--transition-fast), box-shadow var(--transition-fast) !important;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast), background-color 0.3s ease !important;
 }
 
 .form-input-custom::placeholder {
@@ -240,16 +288,16 @@ body {
   font-size: 0.8rem;
 }
 
-/* Bootstrap Alert override for dark theme */
+/* Bootstrap Alert override */
 .alert-danger {
-  background: rgba(239, 68, 68, 0.12) !important;
-  border: 1px solid rgba(239, 68, 68, 0.25) !important;
-  color: #fca5a5 !important;
+  background: var(--alert-danger-bg) !important;
+  border: 1px solid var(--alert-danger-border) !important;
+  color: var(--alert-danger-text) !important;
   border-radius: 10px !important;
 }
 
 .alert-danger .btn-close {
-  filter: invert(1) grayscale(100%) brightness(200%);
+  filter: var(--close-btn-filter);
 }
 
 /* ============================================
@@ -277,12 +325,13 @@ body {
  * Navbar
  * ============================================ */
 .app-navbar {
-  background: rgba(15, 23, 42, 0.85) !important;
+  background: var(--navbar-bg) !important;
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border-bottom: 1px solid var(--border-color);
   padding: 0.6rem 0;
   z-index: 1030;
+  transition: background-color 0.3s ease !important;
 }
 
 .navbar-brand-custom {
@@ -291,7 +340,7 @@ body {
   gap: 0.6rem;
   font-weight: 700;
   font-size: 1.15rem;
-  color: #fff !important;
+  color: var(--text-heading) !important;
 }
 
 .brand-icon {
@@ -323,12 +372,12 @@ body {
 }
 
 .nav-link-custom:hover {
-  color: #fff !important;
+  color: var(--text-heading) !important;
   background: var(--surface-glass);
 }
 
 .nav-link-custom.active {
-  color: #fff !important;
+  color: var(--text-heading) !important;
   background: rgba(99, 102, 241, 0.15);
 }
 
@@ -369,7 +418,7 @@ body {
 .page-title {
   font-size: 1.75rem;
   font-weight: 700;
-  color: #fff;
+  color: var(--text-heading);
   letter-spacing: -0.025em;
   margin-bottom: 0.15rem;
 }
@@ -387,7 +436,7 @@ body {
   background: var(--surface-card) !important;
   border: 1px solid var(--border-color) !important;
   border-radius: var(--border-radius) !important;
-  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast), background-color 0.3s ease;
   cursor: default;
 }
 
@@ -423,7 +472,7 @@ body {
 .stat-value {
   font-size: 1.45rem;
   font-weight: 700;
-  color: #fff;
+  color: var(--text-heading);
   line-height: 1.2;
   margin-top: 0.1rem;
 }
@@ -483,7 +532,7 @@ body {
 }
 
 .leads-table thead th {
-  background: rgba(255, 255, 255, 0.03) !important;
+  background: var(--table-header-bg) !important;
   border-bottom: 1px solid var(--border-color) !important;
   color: var(--gray-400) !important;
   font-weight: 600;
@@ -500,7 +549,7 @@ body {
 }
 
 .leads-table tbody tr:hover {
-  background: rgba(255, 255, 255, 0.03) !important;
+  background: var(--table-hover-bg) !important;
 }
 
 .leads-table tbody td {
@@ -512,7 +561,7 @@ body {
 
 .leads-table .fw-medium {
   font-weight: 500;
-  color: #fff;
+  color: var(--text-heading);
 }
 
 /* ---- Status Badges ---- */
@@ -590,11 +639,11 @@ body {
 .modal-title-custom {
   font-size: 1.15rem;
   font-weight: 700;
-  color: #fff;
+  color: var(--text-heading);
 }
 
 .modal-header-custom .btn-close {
-  filter: invert(1) grayscale(100%) brightness(200%);
+  filter: var(--close-btn-filter);
   opacity: 0.6;
 }
 
@@ -611,10 +660,10 @@ body {
   padding: 1rem 1.5rem !important;
 }
 
-/* Select dropdown dark-theme fix */
+/* Select dropdown theme fix */
 .form-input-custom option {
-  background: var(--surface-secondary);
-  color: #fff;
+  background: var(--option-bg);
+  color: var(--option-text);
 }
 
 .btn-modal-cancel {
@@ -628,7 +677,7 @@ body {
 
 .btn-modal-cancel:hover {
   background: rgba(255, 255, 255, 0.08) !important;
-  color: #fff !important;
+  color: var(--text-heading) !important;
 }
 
 .btn-modal-save {
@@ -665,7 +714,7 @@ body {
 
 .btn-back:hover {
   background: var(--surface-glass) !important;
-  color: #fff !important;
+  color: var(--text-heading) !important;
   border-color: var(--gray-500) !important;
 }
 
@@ -680,9 +729,9 @@ body {
 .detail-card-header {
   display: flex;
   align-items: center;
-  background: rgba(255, 255, 255, 0.03) !important;
+  background: var(--table-header-bg) !important;
   border-bottom: 1px solid var(--border-color) !important;
-  color: var(--gray-200) !important;
+  color: var(--text-heading) !important;
   font-weight: 600;
   font-size: 0.95rem;
   padding: 0.9rem 1.25rem !important;
@@ -707,7 +756,7 @@ body {
 }
 
 .detail-item:hover {
-  background: rgba(255, 255, 255, 0.02);
+  background: var(--table-hover-bg);
 }
 
 .detail-icon {
@@ -862,10 +911,45 @@ body {
   color: #a5f3fc !important;
 }
 
-/* ---- Success Alert (dark theme) ---- */
+/* ---- Success Alert ---- */
 .alert-success-custom {
   background: rgba(16, 185, 129, 0.12) !important;
   border: 1px solid rgba(16, 185, 129, 0.25) !important;
   color: #6ee7b7 !important;
   border-radius: 10px !important;
+}
+
+/* ============================================
+ * Theme Toggle Button
+ * ============================================ */
+.btn-theme-toggle {
+  border-radius: 8px !important;
+  font-size: 0.8rem !important;
+  font-weight: 500 !important;
+  border-color: var(--border-color) !important;
+  color: var(--gray-400) !important;
+  background: var(--surface-glass) !important;
+  padding: 0.35rem 0.75rem !important;
+  display: inline-flex;
+  align-items: center;
+  transition: all var(--transition-fast) !important;
+}
+
+.btn-theme-toggle:hover {
+  background: rgba(99, 102, 241, 0.12) !important;
+  border-color: var(--primary-500) !important;
+  color: var(--primary-400) !important;
+}
+
+/* ============================================
+ * Smooth Theme Transitions
+ * ============================================ */
+.app-navbar,
+.stat-card,
+.detail-card,
+.table-wrapper,
+.login-card,
+.lead-modal .modal-content,
+.note-card {
+  transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
 }

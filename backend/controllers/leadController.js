@@ -28,7 +28,7 @@ const VALID_STATUSES = [
  */
 const getLeads = async (req, res) => {
   try {
-    const { status, lead_source, search } = req.query;
+    const { status, lead_source, assigned_salesperson, search } = req.query;
 
     let query = 'SELECT * FROM leads WHERE 1=1';
     const params = [];
@@ -42,6 +42,11 @@ const getLeads = async (req, res) => {
     if (lead_source) {
       query += ' AND lead_source = ?';
       params.push(lead_source);
+    }
+
+    if (assigned_salesperson) {
+      query += ' AND assigned_salesperson = ?';
+      params.push(assigned_salesperson);
     }
 
     if (search) {

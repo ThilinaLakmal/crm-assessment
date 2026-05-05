@@ -5,20 +5,25 @@
  * Top-level navbar with:
  *  - App branding
  *  - Navigation links (Dashboard, Leads)
+ *  - Theme toggle (dark/light mode)
  *  - User info + Logout button
  */
 
 import { Navbar as BSNavbar, Nav, Container, Button } from 'react-bootstrap';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
+import { useTheme } from '../contexts/ThemeContext';
 import {
   HiOutlineChartBar,
   HiOutlineUsers,
   HiOutlineLogout,
+  HiOutlineSun,
+  HiOutlineMoon,
 } from 'react-icons/hi';
 
 const Navbar = () => {
   const { user, logout } = useAuth();
+  const { isDarkMode, toggleTheme } = useTheme();
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -27,7 +32,7 @@ const Navbar = () => {
   };
 
   return (
-    <BSNavbar className="app-navbar" expand="md" variant="dark" sticky="top">
+    <BSNavbar className="app-navbar" expand="md" variant={isDarkMode ? 'dark' : 'light'} sticky="top">
       <Container fluid className="px-4">
 
         {/* ---- Brand ---- */}
@@ -60,8 +65,21 @@ const Navbar = () => {
             </Nav.Link>
           </Nav>
 
-          {/* ---- User & Logout ---- */}
+          {/* ---- Theme Toggle + User & Logout ---- */}
           <div className="d-flex align-items-center gap-3">
+            <Button
+              variant="outline-secondary"
+              size="sm"
+              className="btn-theme-toggle"
+              onClick={toggleTheme}
+              title={isDarkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
+            >
+              {isDarkMode ? (
+                <><HiOutlineSun className="me-1" /> Light</>
+              ) : (
+                <><HiOutlineMoon className="me-1" /> Dark</>
+              )}
+            </Button>
             <span className="user-email">{user?.email}</span>
             <Button
               variant="outline-light"
