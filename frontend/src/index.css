@@ -1,0 +1,871 @@
+/* ============================================
+ * CRM Lead Management System — Global Styles
+ * ============================================
+ * Design tokens, login page styling, and shared utilities.
+ * Uses a modern dark theme with glassmorphism accents.
+ */
+
+/* ---- Google Font ---- */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+/* ============================================
+ * CSS Custom Properties (Design Tokens)
+ * ============================================ */
+:root {
+  /* Primary Palette */
+  --primary-600: #4f46e5;
+  --primary-500: #6366f1;
+  --primary-400: #818cf8;
+  --primary-300: #a5b4fc;
+
+  /* Neutral Palette */
+  --gray-50:  #f8fafc;
+  --gray-100: #f1f5f9;
+  --gray-200: #e2e8f0;
+  --gray-300: #cbd5e1;
+  --gray-400: #94a3b8;
+  --gray-500: #64748b;
+  --gray-600: #475569;
+  --gray-700: #334155;
+  --gray-800: #1e293b;
+  --gray-900: #0f172a;
+  --gray-950: #020617;
+
+  /* Semantic Colors */
+  --success: #10b981;
+  --danger:  #ef4444;
+  --warning: #f59e0b;
+  --info:    #3b82f6;
+
+  /* Surfaces */
+  --surface-primary:   #0f172a;
+  --surface-secondary: #1e293b;
+  --surface-card:      rgba(30, 41, 59, 0.7);
+  --surface-glass:     rgba(255, 255, 255, 0.05);
+
+  /* Typography */
+  --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
+  /* Borders */
+  --border-color: rgba(255, 255, 255, 0.08);
+  --border-radius: 12px;
+  --border-radius-lg: 16px;
+
+  /* Shadows */
+  --shadow-sm:  0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow-md:  0 4px 6px -1px rgba(0, 0, 0, 0.4);
+  --shadow-lg:  0 10px 25px -3px rgba(0, 0, 0, 0.5);
+  --shadow-xl:  0 20px 50px -12px rgba(0, 0, 0, 0.6);
+  --shadow-glow: 0 0 40px rgba(99, 102, 241, 0.15);
+
+  /* Transitions */
+  --transition-fast: 150ms ease;
+  --transition-base: 250ms ease;
+  --transition-slow: 350ms ease;
+}
+
+/* ============================================
+ * Base Reset & Global
+ * ============================================ */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-family);
+  background-color: var(--surface-primary);
+  color: var(--gray-100);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ============================================
+ * Login Page
+ * ============================================ */
+.login-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #0f172a 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Animated background orbs */
+.login-page::before,
+.login-page::after {
+  content: '';
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.3;
+  animation: float 8s ease-in-out infinite;
+}
+
+.login-page::before {
+  width: 400px;
+  height: 400px;
+  background: var(--primary-500);
+  top: -100px;
+  right: -100px;
+  animation-delay: 0s;
+}
+
+.login-page::after {
+  width: 350px;
+  height: 350px;
+  background: #7c3aed;
+  bottom: -80px;
+  left: -80px;
+  animation-delay: 4s;
+}
+
+@keyframes float {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33%      { transform: translate(30px, -30px) scale(1.05); }
+  66%      { transform: translate(-20px, 20px) scale(0.95); }
+}
+
+/* ---- Branding ---- */
+.login-logo {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 72px;
+  height: 72px;
+  border-radius: 20px;
+  background: linear-gradient(135deg, var(--primary-500), #7c3aed);
+  box-shadow: var(--shadow-glow);
+}
+
+.logo-icon {
+  font-size: 2rem;
+}
+
+.login-title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: -0.025em;
+}
+
+.login-subtitle {
+  font-size: 0.95rem;
+  color: var(--gray-400);
+  margin-top: 0.25rem;
+}
+
+/* ---- Glass Card ---- */
+.login-card {
+  background: var(--surface-card) !important;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--border-color) !important;
+  border-radius: var(--border-radius-lg) !important;
+  box-shadow: var(--shadow-xl);
+  transition: box-shadow var(--transition-base);
+}
+
+.login-card:hover {
+  box-shadow: var(--shadow-xl), var(--shadow-glow);
+}
+
+/* ---- Form Styles ---- */
+.form-label-custom {
+  display: flex;
+  align-items: center;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--gray-300);
+  margin-bottom: 0.5rem;
+}
+
+.form-input-custom {
+  background: var(--surface-glass) !important;
+  border: 1px solid var(--border-color) !important;
+  border-radius: 10px !important;
+  color: #fff !important;
+  padding: 0.7rem 1rem !important;
+  font-size: 0.95rem !important;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast) !important;
+}
+
+.form-input-custom::placeholder {
+  color: var(--gray-500) !important;
+}
+
+.form-input-custom:focus {
+  border-color: var(--primary-500) !important;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2) !important;
+  outline: none !important;
+}
+
+/* ---- Login Button ---- */
+.btn-login {
+  background: linear-gradient(135deg, var(--primary-500), #7c3aed) !important;
+  border: none !important;
+  border-radius: 10px !important;
+  padding: 0.75rem 1.5rem !important;
+  font-weight: 600 !important;
+  font-size: 1rem !important;
+  letter-spacing: 0.025em;
+  color: #fff !important;
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast) !important;
+}
+
+.btn-login:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 25px rgba(99, 102, 241, 0.35) !important;
+}
+
+.btn-login:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.btn-login:disabled {
+  opacity: 0.7 !important;
+  cursor: not-allowed;
+}
+
+/* ---- Misc ---- */
+.text-muted-custom {
+  color: var(--gray-500);
+  font-size: 0.8rem;
+}
+
+/* Bootstrap Alert override for dark theme */
+.alert-danger {
+  background: rgba(239, 68, 68, 0.12) !important;
+  border: 1px solid rgba(239, 68, 68, 0.25) !important;
+  color: #fca5a5 !important;
+  border-radius: 10px !important;
+}
+
+.alert-danger .btn-close {
+  filter: invert(1) grayscale(100%) brightness(200%);
+}
+
+/* ============================================
+ * Scrollbar (Webkit)
+ * ============================================ */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--surface-primary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--gray-600);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--gray-500);
+}
+
+/* ============================================
+ * Navbar
+ * ============================================ */
+.app-navbar {
+  background: rgba(15, 23, 42, 0.85) !important;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border-color);
+  padding: 0.6rem 0;
+  z-index: 1030;
+}
+
+.navbar-brand-custom {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-weight: 700;
+  font-size: 1.15rem;
+  color: #fff !important;
+}
+
+.brand-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, var(--primary-500), #7c3aed);
+  font-size: 1.1rem;
+}
+
+.brand-text {
+  letter-spacing: -0.02em;
+}
+
+.nav-link-custom {
+  display: flex !important;
+  align-items: center;
+  gap: 0.25rem;
+  color: var(--gray-400) !important;
+  font-weight: 500;
+  font-size: 0.9rem;
+  padding: 0.5rem 1rem !important;
+  border-radius: 8px;
+  margin: 0 0.15rem;
+  transition: color var(--transition-fast), background var(--transition-fast);
+}
+
+.nav-link-custom:hover {
+  color: #fff !important;
+  background: var(--surface-glass);
+}
+
+.nav-link-custom.active {
+  color: #fff !important;
+  background: rgba(99, 102, 241, 0.15);
+}
+
+.user-email {
+  color: var(--gray-400);
+  font-size: 0.85rem;
+}
+
+.btn-logout {
+  border-radius: 8px !important;
+  font-size: 0.8rem !important;
+  font-weight: 500 !important;
+  border-color: var(--gray-600) !important;
+  color: var(--gray-300) !important;
+  transition: all var(--transition-fast) !important;
+}
+
+.btn-logout:hover {
+  background: rgba(239, 68, 68, 0.15) !important;
+  border-color: var(--danger) !important;
+  color: #fca5a5 !important;
+}
+
+/* ============================================
+ * App Main Content Area
+ * ============================================ */
+.app-main {
+  min-height: calc(100vh - 60px);
+}
+
+/* ============================================
+ * Page Header
+ * ============================================ */
+.page-header {
+  padding-bottom: 0.5rem;
+}
+
+.page-title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: -0.025em;
+  margin-bottom: 0.15rem;
+}
+
+.page-subtitle {
+  font-size: 0.9rem;
+  color: var(--gray-400);
+  margin: 0;
+}
+
+/* ============================================
+ * Dashboard Stat Cards
+ * ============================================ */
+.stat-card {
+  background: var(--surface-card) !important;
+  border: 1px solid var(--border-color) !important;
+  border-radius: var(--border-radius) !important;
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+  cursor: default;
+}
+
+.stat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+.stat-icon-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  min-width: 48px;
+  border-radius: 12px;
+  flex-shrink: 0;
+}
+
+.stat-info {
+  min-width: 0;
+}
+
+.stat-label {
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: var(--gray-400);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  line-height: 1.3;
+}
+
+.stat-value {
+  font-size: 1.45rem;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.2;
+  margin-top: 0.1rem;
+}
+
+/* ============================================
+ * Leads Page — Toolbar
+ * ============================================ */
+.search-input-group {
+  border-radius: 10px !important;
+  overflow: hidden;
+}
+
+.search-icon-wrapper {
+  background: var(--surface-glass) !important;
+  border: 1px solid var(--border-color) !important;
+  border-right: none !important;
+  color: var(--gray-400) !important;
+}
+
+.search-input-group .form-input-custom {
+  border-top-left-radius: 0 !important;
+  border-bottom-left-radius: 0 !important;
+}
+
+.btn-add-lead {
+  background: linear-gradient(135deg, var(--primary-500), #7c3aed) !important;
+  border: none !important;
+  border-radius: 10px !important;
+  padding: 0.6rem 1.25rem !important;
+  font-weight: 600 !important;
+  font-size: 0.9rem !important;
+  color: #fff !important;
+  display: inline-flex;
+  align-items: center;
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast) !important;
+}
+
+.btn-add-lead:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(99, 102, 241, 0.3) !important;
+}
+
+/* ============================================
+ * Leads Table
+ * ============================================ */
+.table-wrapper {
+  background: var(--surface-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  overflow: hidden;
+}
+
+.leads-table {
+  color: var(--gray-200) !important;
+  margin-bottom: 0 !important;
+  font-size: 0.9rem;
+}
+
+.leads-table thead th {
+  background: rgba(255, 255, 255, 0.03) !important;
+  border-bottom: 1px solid var(--border-color) !important;
+  color: var(--gray-400) !important;
+  font-weight: 600;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 0.85rem 1rem !important;
+  white-space: nowrap;
+}
+
+.leads-table tbody tr {
+  border-bottom: 1px solid var(--border-color);
+  transition: background var(--transition-fast);
+}
+
+.leads-table tbody tr:hover {
+  background: rgba(255, 255, 255, 0.03) !important;
+}
+
+.leads-table tbody td {
+  padding: 0.8rem 1rem !important;
+  vertical-align: middle;
+  border-bottom: 1px solid var(--border-color) !important;
+  color: var(--gray-200);
+}
+
+.leads-table .fw-medium {
+  font-weight: 500;
+  color: #fff;
+}
+
+/* ---- Status Badges ---- */
+.status-badge {
+  font-size: 0.75rem !important;
+  font-weight: 600 !important;
+  padding: 0.35em 0.75em !important;
+  border-radius: 6px !important;
+  letter-spacing: 0.02em;
+}
+
+/* ---- Action Buttons ---- */
+.btn-action {
+  border-radius: 8px !important;
+  padding: 0.35rem 0.55rem !important;
+  font-size: 0.85rem !important;
+  border-color: var(--border-color) !important;
+  transition: all var(--transition-fast) !important;
+}
+
+.btn-action.btn-outline-primary {
+  color: var(--primary-400) !important;
+}
+
+.btn-action.btn-outline-primary:hover {
+  background: rgba(99, 102, 241, 0.15) !important;
+  border-color: var(--primary-500) !important;
+  color: var(--primary-300) !important;
+}
+
+.btn-action.btn-outline-danger {
+  color: #f87171 !important;
+}
+
+.btn-action.btn-outline-danger:hover {
+  background: rgba(239, 68, 68, 0.15) !important;
+  border-color: var(--danger) !important;
+  color: #fca5a5 !important;
+}
+
+/* ---- Empty State ---- */
+.empty-state {
+  text-align: center;
+  padding: 4rem 2rem;
+  color: var(--gray-400);
+}
+
+.empty-state-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  opacity: 0.6;
+}
+
+.empty-state h4 {
+  color: var(--gray-300);
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+/* ============================================
+ * Lead Modal
+ * ============================================ */
+.lead-modal .modal-content {
+  background: var(--surface-secondary) !important;
+  border: 1px solid var(--border-color) !important;
+  border-radius: var(--border-radius-lg) !important;
+  box-shadow: var(--shadow-xl) !important;
+}
+
+.modal-header-custom {
+  border-bottom: 1px solid var(--border-color) !important;
+  padding: 1.25rem 1.5rem !important;
+}
+
+.modal-title-custom {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #fff;
+}
+
+.modal-header-custom .btn-close {
+  filter: invert(1) grayscale(100%) brightness(200%);
+  opacity: 0.6;
+}
+
+.modal-header-custom .btn-close:hover {
+  opacity: 1;
+}
+
+.modal-body-custom {
+  padding: 1.5rem !important;
+}
+
+.modal-footer-custom {
+  border-top: 1px solid var(--border-color) !important;
+  padding: 1rem 1.5rem !important;
+}
+
+/* Select dropdown dark-theme fix */
+.form-input-custom option {
+  background: var(--surface-secondary);
+  color: #fff;
+}
+
+.btn-modal-cancel {
+  background: var(--surface-glass) !important;
+  border: 1px solid var(--border-color) !important;
+  color: var(--gray-300) !important;
+  border-radius: 10px !important;
+  font-weight: 500 !important;
+  transition: all var(--transition-fast) !important;
+}
+
+.btn-modal-cancel:hover {
+  background: rgba(255, 255, 255, 0.08) !important;
+  color: #fff !important;
+}
+
+.btn-modal-save {
+  background: linear-gradient(135deg, var(--primary-500), #7c3aed) !important;
+  border: none !important;
+  border-radius: 10px !important;
+  font-weight: 600 !important;
+  color: #fff !important;
+  padding: 0.6rem 1.5rem !important;
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast) !important;
+}
+
+.btn-modal-save:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(99, 102, 241, 0.3) !important;
+}
+
+.btn-modal-save:disabled {
+  opacity: 0.7 !important;
+}
+
+/* ============================================
+ * Lead Details Page
+ * ============================================ */
+
+/* ---- Back Button ---- */
+.btn-back {
+  border-radius: 10px !important;
+  border-color: var(--border-color) !important;
+  color: var(--gray-300) !important;
+  padding: 0.45rem 0.65rem !important;
+  transition: all var(--transition-fast) !important;
+}
+
+.btn-back:hover {
+  background: var(--surface-glass) !important;
+  color: #fff !important;
+  border-color: var(--gray-500) !important;
+}
+
+/* ---- Detail Card ---- */
+.detail-card {
+  background: var(--surface-card) !important;
+  border: 1px solid var(--border-color) !important;
+  border-radius: var(--border-radius) !important;
+  overflow: hidden;
+}
+
+.detail-card-header {
+  display: flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.03) !important;
+  border-bottom: 1px solid var(--border-color) !important;
+  color: var(--gray-200) !important;
+  font-weight: 600;
+  font-size: 0.95rem;
+  padding: 0.9rem 1.25rem !important;
+}
+
+/* ---- Detail List (Lead Info) ---- */
+.detail-list {
+  padding: 0;
+}
+
+.detail-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.85rem;
+  padding: 0.85rem 1.25rem;
+  border-bottom: 1px solid var(--border-color);
+  transition: background var(--transition-fast);
+}
+
+.detail-item:last-child {
+  border-bottom: none;
+}
+
+.detail-item:hover {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.detail-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  min-width: 36px;
+  border-radius: 10px;
+  background: var(--surface-glass);
+  color: var(--primary-400);
+  font-size: 1.05rem;
+  margin-top: 0.1rem;
+}
+
+.detail-content {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.detail-label {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--gray-500);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  line-height: 1.3;
+}
+
+.detail-value {
+  font-size: 0.95rem;
+  color: var(--gray-100);
+  word-break: break-word;
+}
+
+.detail-value-highlight {
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: #a78bfa;
+}
+
+.detail-link {
+  color: var(--primary-400);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+.detail-link:hover {
+  color: var(--primary-300);
+  text-decoration: underline;
+}
+
+/* ============================================
+ * Notes Timeline
+ * ============================================ */
+.notes-timeline-body {
+  padding: 1.25rem !important;
+  max-height: 500px;
+  overflow-y: auto;
+}
+
+.notes-timeline {
+  position: relative;
+  padding-left: 1.5rem;
+}
+
+/* Vertical connecting line */
+.notes-timeline::before {
+  content: '';
+  position: absolute;
+  left: 7px;
+  top: 8px;
+  bottom: 8px;
+  width: 2px;
+  background: var(--border-color);
+  border-radius: 2px;
+}
+
+.note-item {
+  position: relative;
+  margin-bottom: 1.25rem;
+}
+
+.note-item:last-child {
+  margin-bottom: 0;
+}
+
+/* Timeline dot */
+.note-dot {
+  position: absolute;
+  left: -1.5rem;
+  top: 10px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--primary-500);
+  border: 3px solid var(--surface-secondary);
+  z-index: 1;
+  transform: translateX(0);
+}
+
+.note-card {
+  background: var(--surface-glass);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  padding: 0.85rem 1rem;
+  transition: border-color var(--transition-fast);
+}
+
+.note-card:hover {
+  border-color: rgba(99, 102, 241, 0.25);
+}
+
+.note-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.4rem;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.note-author {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--primary-300);
+}
+
+.note-date {
+  font-size: 0.75rem;
+  color: var(--gray-500);
+}
+
+.note-content {
+  font-size: 0.9rem;
+  color: var(--gray-200);
+  line-height: 1.55;
+  margin: 0;
+  white-space: pre-wrap;
+}
+
+/* ---- View Button (info variant) ---- */
+.btn-action.btn-outline-info {
+  color: #67e8f9 !important;
+}
+
+.btn-action.btn-outline-info:hover {
+  background: rgba(34, 211, 238, 0.12) !important;
+  border-color: #22d3ee !important;
+  color: #a5f3fc !important;
+}
+
+/* ---- Success Alert (dark theme) ---- */
+.alert-success-custom {
+  background: rgba(16, 185, 129, 0.12) !important;
+  border: 1px solid rgba(16, 185, 129, 0.25) !important;
+  color: #6ee7b7 !important;
+  border-radius: 10px !important;
+}
