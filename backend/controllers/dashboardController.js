@@ -20,7 +20,9 @@ const getDashboardStats = async (req, res) => {
       SELECT
         COUNT(*)                                                    AS totalLeads,
         SUM(CASE WHEN status = 'New'       THEN 1 ELSE 0 END)      AS newLeads,
+        SUM(CASE WHEN status = 'Contacted'  THEN 1 ELSE 0 END)     AS contactedLeads,
         SUM(CASE WHEN status = 'Qualified'  THEN 1 ELSE 0 END)     AS qualifiedLeads,
+        SUM(CASE WHEN status = 'Proposal Sent' THEN 1 ELSE 0 END)  AS proposalSentLeads,
         SUM(CASE WHEN status = 'Won'        THEN 1 ELSE 0 END)     AS wonLeads,
         SUM(CASE WHEN status = 'Lost'       THEN 1 ELSE 0 END)     AS lostLeads,
         COALESCE(SUM(estimated_deal_value), 0)                      AS totalEstimatedValue,
@@ -37,7 +39,9 @@ const getDashboardStats = async (req, res) => {
       data: {
         totalLeads:          Number(stats.totalLeads),
         newLeads:            Number(stats.newLeads),
+        contactedLeads:      Number(stats.contactedLeads),
         qualifiedLeads:      Number(stats.qualifiedLeads),
+        proposalSentLeads:   Number(stats.proposalSentLeads),
         wonLeads:            Number(stats.wonLeads),
         lostLeads:           Number(stats.lostLeads),
         totalEstimatedValue: Number(stats.totalEstimatedValue),
