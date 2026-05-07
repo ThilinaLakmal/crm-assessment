@@ -18,11 +18,28 @@ import Dashboard from './pages/Dashboard';
 import Leads from './pages/Leads';
 import LeadDetails from './pages/LeadDetails';
 import Settings from './pages/Settings';
-
-
+import { Toaster } from 'react-hot-toast';
 
 function App() {
   return (
+    <>
+      <Toaster 
+        position="top-right" 
+        toastOptions={{
+          style: {
+            background: 'var(--surface-card)',
+            color: 'var(--text-heading)',
+            border: '1px solid var(--border-color)',
+            borderRadius: '10px',
+          },
+          success: {
+            iconTheme: {
+              primary: 'var(--success-color, #10b981)',
+              secondary: '#fff',
+            },
+          },
+        }} 
+      />
       <Routes>
         {/* Public Route */}
         <Route path="/login" element={<PageTransition><Login /></PageTransition>} />
@@ -40,6 +57,7 @@ function App() {
         {/* Catch-all — redirect unknown routes to home */}
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
+    </>
   );
 }
 

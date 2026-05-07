@@ -12,6 +12,7 @@
 import { useState, useEffect } from 'react';
 import { Modal, Form, Button, Row, Col, Alert, Spinner } from 'react-bootstrap';
 import api from '../services/api';
+import { toast } from 'react-hot-toast';
 
 // ---- Constants ----
 const STATUS_OPTIONS = [
@@ -98,8 +99,10 @@ const LeadModal = ({ show, onHide, lead, onSuccess }) => {
 
       if (isEdit) {
         await api.put(`/leads/${lead.id}`, payload);
+        toast.success('Lead updated successfully!');
       } else {
         await api.post('/leads', payload);
+        toast.success('New lead added successfully!');
       }
 
       onSuccess(); // Refresh parent list

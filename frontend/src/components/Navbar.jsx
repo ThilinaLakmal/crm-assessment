@@ -14,15 +14,10 @@ import {
   HiOutlineInbox
 } from 'react-icons/hi';
 
-const Navbar = ({ toggleSidebar, isSidebarOpen }) => {
-  const { user, logout } = useAuth();
+const Navbar = ({ toggleSidebar, isSidebarOpen, onLogoutClick }) => {
+  const { user } = useAuth();
   const { isDarkMode, toggleTheme } = useTheme();
   const navigate = useNavigate();
-
-  const handleLogout = () => {
-    logout();
-    navigate('/login', { replace: true });
-  };
 
   return (
     <BSNavbar className="app-navbar border-bottom" expand="md" variant={isDarkMode ? 'dark' : 'light'} sticky="top">
@@ -159,7 +154,7 @@ const Navbar = ({ toggleSidebar, isSidebarOpen }) => {
                 <HiOutlineCog size={18} /> Workspace Settings
               </Dropdown.Item>
               <Dropdown.Divider style={{ borderColor: 'var(--border-color)' }} />
-              <Dropdown.Item onClick={handleLogout} className="text-danger d-flex align-items-center gap-2 py-2 fw-medium">
+              <Dropdown.Item onClick={onLogoutClick} className="text-danger d-flex align-items-center gap-2 py-2 fw-medium">
                 <HiOutlineLogout size={18} /> Sign Out
               </Dropdown.Item>
             </Dropdown.Menu>

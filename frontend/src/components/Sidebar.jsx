@@ -1,8 +1,8 @@
 import { NavLink } from 'react-router-dom';
-import { HiOutlineChartBar, HiOutlineUsers, HiOutlineCog, HiOutlineSparkles } from 'react-icons/hi';
+import { HiOutlineChartBar, HiOutlineUsers, HiOutlineCog, HiOutlineSparkles, HiOutlineLogout } from 'react-icons/hi';
 import { motion } from 'framer-motion';
 
-const Sidebar = ({ isOpen }) => {
+const Sidebar = ({ isOpen, onLogoutClick }) => {
   return (
     <motion.aside
       className="app-sidebar"
@@ -57,6 +57,18 @@ const Sidebar = ({ isOpen }) => {
           {isOpen && <span className="sidebar-link-text">Settings</span>}
         </NavLink>
       </nav>
+
+      {/* ---- Sidebar Footer: Sign Out ---- */}
+      <div className="mt-auto p-3 border-top" style={{ borderColor: 'rgba(255,255,255,0.05)' }}>
+        <button 
+          onClick={onLogoutClick}
+          className="sidebar-link w-100 border-0 bg-transparent text-start"
+          style={{ color: '#ef4444' }}
+        >
+          <HiOutlineLogout size={22} className="sidebar-icon" style={{ color: '#ef4444' }} />
+          {isOpen && <span className="sidebar-link-text">Sign Out</span>}
+        </button>
+      </div>
     </motion.aside>
   );
 };

@@ -1430,30 +1430,37 @@ body {
 }
 
 /* ============================================
- * Animated Navbar Title
+ * Navbar Title
  * ============================================ */
 .animated-brand-text {
-  background: linear-gradient(
-    270deg,
-    var(--primary-500) 0%,
-    #a78bfa 25%,
-    var(--primary-400) 50%,
-    #a78bfa 75%,
-    var(--primary-500) 100%
-  );
-  background-size: 200% auto;
-  color: transparent;
-  -webkit-background-clip: text;
-  background-clip: text;
-  animation: gradientShine 6s linear infinite;
   font-weight: 800;
   font-size: 1.4rem;
   letter-spacing: -0.02em;
   white-space: nowrap;
+
+  /* Button color base with a soft sheen overlay */
+  background: linear-gradient(
+    135deg, 
+    var(--primary-500) 0%, 
+    #7c3aed 35%, 
+    #a78bfa 50%, /* The subtle shine highlight */
+    #7c3aed 65%, 
+    var(--primary-500) 100%
+  );
+  background-size: 300% auto;
+  color: transparent;
+  -webkit-background-clip: text;
+  background-clip: text;
+  
+  /* Very slow, gentle, comfortable animation */
+  animation: gentleSheen 8s ease-in-out infinite alternate;
 }
 
-@keyframes gradientShine {
-  to {
-    background-position: 200% center;
+@keyframes gentleSheen {
+  0% {
+    background-position: 0% center;
+  }
+  100% {
+    background-position: 100% center;
   }
 }

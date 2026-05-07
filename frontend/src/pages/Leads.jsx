@@ -25,6 +25,8 @@ import {
 } from 'react-icons/hi';
 import api from '../services/api';
 import LeadModal from '../components/LeadModal';
+import ConfirmModal from '../components/ConfirmModal';
+import { toast } from 'react-hot-toast';
 
 // ---- Filter options ----
 const STATUS_OPTIONS = [
@@ -90,6 +92,7 @@ const Leads = () => {
 
   // Delete state
   const [deleting, setDeleting] = useState(null); // lead id being deleted
+  const [leadToDelete, setLeadToDelete] = useState(null);
 
   // ---- Fetch leads ----
   const fetchLeads = useCallback(async () => {
@@ -117,20 +120,24 @@ const Leads = () => {
   }, [fetchLeads]);
 
   // ---- Delete handler ----
-  const handleDelete = async (lead) => {
-    const confirmed = window.confirm(
-      `Are you sure you want to delete "${lead.lead_name}"?\nThis action cannot be undone.`
-    );
-    if (!confirmed) return;
+  const handleDeleteClick = (lead) => {
+    setLeadToDelete(lead);
+  };
 
+  const confirmDelete = async () => {
+    if (!leadToDelete) return;
+    
     try {
-      setDeleting(lead.id);
-      await api.delete(`/leads/${lead.id}`);
+      setDeleting(leadToDelete.id);
+      await api.delete(`/leads/${leadToDelete.id}`);
       await fetchLeads();
+      toast.success(`Lead "${leadToDelete.lead_name}" deleted successfully.`);
     } catch (err) {
+      toast.error('Failed to delete lead.');
       setError('Failed to delete lead.');
     } finally {
       setDeleting(null);
+      setLeadToDelete(null);
     }
   };
 
@@ -327,7 +334,7 @@ const Leads = () => {
                           variant="outline-danger"
                           className="btn-action"
                           title="Delete"
-                          onClick={() => handleDelete(lead)}
+                          onClick={() => handleDeleteClick(lead)}
                           disabled={deleting === lead.id}
                         >
                           {deleting === lead.id ? (
@@ -353,6 +360,15 @@ const Leads = () => {
         lead={editingLead}
         onSuccess={fetchLeads}
       />
+      <ConfirmModal 
+        show={!!leadToDelete}
+        onHide={() => setLeadToDelete(null)}
+        onConfirm={confirmDelete}
+        title="Delete Lead"
+        message={`Are you sure you want to delete "${leadToDelete?.lead_name}"?\nThis action cannot be undone.`}
+        isProcessing={!!deleting}
+      />
+
     </Container>
   );
 };

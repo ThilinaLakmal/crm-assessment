@@ -14,6 +14,7 @@ import {
 } from 'react-icons/hi';
 import { useTheme } from '../contexts/ThemeContext';
 import { useAuth } from '../contexts/AuthContext';
+import { toast } from 'react-hot-toast';
 
 const Settings = () => {
   const { isDarkMode, toggleTheme } = useTheme();
@@ -37,6 +38,7 @@ const Settings = () => {
     setIsSaving(true);
     setTimeout(() => {
       setIsSaving(false);
+      toast.success('Settings saved successfully!');
     }, 800);
   };
 

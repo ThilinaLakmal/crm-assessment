@@ -29,6 +29,7 @@ import {
   HiOutlineChatAlt2,
 } from 'react-icons/hi';
 import api from '../services/api';
+import { toast } from 'react-hot-toast';
 
 // ---- Status badge color map ----
 const STATUS_BADGE = {
@@ -73,7 +74,6 @@ const LeadDetails = () => {
   const [noteContent, setNoteContent] = useState('');
   const [submittingNote, setSubmittingNote] = useState(false);
   const [noteError, setNoteError] = useState('');
-  const [noteSuccess, setNoteSuccess] = useState('');
 
   // ---- Fetch lead details ----
   const fetchLead = useCallback(async () => {
@@ -105,11 +105,9 @@ const LeadDetails = () => {
     loadAll();
   }, [fetchLead, fetchNotes]);
 
-  // ---- Add note handler ----
   const handleAddNote = async (e) => {
     e.preventDefault();
     setNoteError('');
-    setNoteSuccess('');
 
     if (!noteContent.trim()) {
       setNoteError('Note content cannot be empty.');
@@ -121,13 +119,12 @@ const LeadDetails = () => {
     try {
       await api.post(`/leads/${id}/notes`, { content: noteContent.trim() });
       setNoteContent('');
-      setNoteSuccess('Note added successfully!');
+      toast.success('Note added successfully!');
       await fetchNotes(); // Refresh notes list
-
-      // Auto-dismiss success message
-      setTimeout(() => setNoteSuccess(''), 3000);
     } catch (err) {
-      setNoteError(err.response?.data?.message || 'Failed to add note.');
+      const msg = err.response?.data?.message || 'Failed to add note.';
+      setNoteError(msg);
+      toast.error(msg);
     } finally {
       setSubmittingNote(false);
     }
@@ -299,11 +296,6 @@ const LeadDetails = () => {
               {noteError && (
                 <Alert variant="danger" dismissible onClose={() => setNoteError('')} className="mb-3">
                   {noteError}
-                </Alert>
-              )}
-              {noteSuccess && (
-                <Alert variant="success" className="mb-3 alert-success-custom">
-                  {noteSuccess}
                 </Alert>
               )}
               <Form onSubmit={handleAddNote}>
