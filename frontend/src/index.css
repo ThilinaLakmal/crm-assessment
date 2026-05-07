@@ -362,6 +362,16 @@ body {
   color: #ffffff;
 }
 
+/* Fix for browser autofill changing background to white */
+.login-glass-input:-webkit-autofill,
+.login-glass-input:-webkit-autofill:hover, 
+.login-glass-input:-webkit-autofill:focus, 
+.login-glass-input:-webkit-autofill:active{
+    -webkit-box-shadow: 0 0 0 30px #1e293b inset !important;
+    -webkit-text-fill-color: white !important;
+    transition: background-color 5000s ease-in-out 0s;
+}
+
 /* ---- Login Button ---- */
 .btn-login {
   background: linear-gradient(135deg, var(--primary-500), #7c3aed) !important;
@@ -1264,16 +1274,35 @@ body {
   display: block !important;
   visibility: hidden;
   opacity: 0;
-  transform: translateY(-10px);
-  transition: opacity 0.2s ease-in-out, transform 0.2s ease-in-out, visibility 0.2s ease-in-out;
+  margin-top: -10px !important;
+  transition: opacity 0.2s ease-in-out, margin-top 0.2s ease-in-out, visibility 0.2s ease-in-out;
   pointer-events: none;
 }
 
 .dropdown-animated.show {
   visibility: visible;
   opacity: 1;
-  transform: translateY(0);
+  margin-top: 8px !important; /* equivalent to mt-2 */
   pointer-events: auto;
+}
+
+/* Custom Dropdown Items */
+.dropdown-item-custom {
+  color: var(--text-primary);
+  padding: 0.5rem 1rem;
+  font-size: 0.95rem;
+  transition: all var(--transition-fast);
+}
+
+.dropdown-item-custom:hover {
+  background-color: var(--surface-glass);
+  color: var(--primary-500);
+}
+
+.dropdown-item-custom.active {
+  background-color: rgba(99, 102, 241, 0.15);
+  color: var(--primary-500);
+  font-weight: 500;
 }
 
 /* ============================================
@@ -1397,5 +1426,34 @@ body {
     position: absolute;
     height: 100%;
     box-shadow: var(--shadow-lg);
+  }
+}
+
+/* ============================================
+ * Animated Navbar Title
+ * ============================================ */
+.animated-brand-text {
+  background: linear-gradient(
+    270deg,
+    var(--primary-500) 0%,
+    #a78bfa 25%,
+    var(--primary-400) 50%,
+    #a78bfa 75%,
+    var(--primary-500) 100%
+  );
+  background-size: 200% auto;
+  color: transparent;
+  -webkit-background-clip: text;
+  background-clip: text;
+  animation: gradientShine 6s linear infinite;
+  font-weight: 800;
+  font-size: 1.4rem;
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+}
+
+@keyframes gradientShine {
+  to {
+    background-position: 200% center;
   }
 }

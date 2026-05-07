@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Outlet } from 'react-router-dom';
+import { AnimatePresence } from 'framer-motion';
 import Sidebar from './Sidebar';
 import Navbar from './Navbar';
 import Footer from './Footer';
@@ -19,11 +20,13 @@ const Layout = () => {
         <div className="app-content-wrapper">
           <Navbar toggleSidebar={toggleSidebar} isSidebarOpen={isSidebarOpen} />
           <main className="app-main-scrollable">
-            <PageTransition>
-              <div className="page-content-inner">
-                <Outlet />
-              </div>
-            </PageTransition>
+            <AnimatePresence mode="wait">
+              <PageTransition>
+                <div className="page-content-inner">
+                  <Outlet />
+                </div>
+              </PageTransition>
+            </AnimatePresence>
           </main>
         </div>
       </div>

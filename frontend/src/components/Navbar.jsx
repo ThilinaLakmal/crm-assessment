@@ -2,12 +2,12 @@ import { Navbar as BSNavbar, Container, Button, Form, InputGroup, Dropdown, Badg
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { useTheme } from '../contexts/ThemeContext';
+import { motion } from 'framer-motion';
 import {
   HiOutlineLogout,
   HiOutlineSun,
   HiOutlineMoon,
   HiOutlineMenu,
-  HiOutlineSearch,
   HiOutlineBell,
   HiOutlineUser,
   HiOutlineCog,
@@ -39,24 +39,17 @@ const Navbar = ({ toggleSidebar, isSidebarOpen }) => {
             <HiOutlineMenu size={24} />
           </Button>
 
-          {/* Decorative Global Search */}
-          <div className="d-none d-lg-block ms-2" style={{ width: '320px' }}>
-            <InputGroup className="global-search-group">
-              <InputGroup.Text className="bg-transparent border-end-0 pe-0 text-muted" style={{ borderColor: 'var(--border-color)' }}>
-                <HiOutlineSearch size={18} />
-              </InputGroup.Text>
-              <Form.Control 
-                type="text" 
-                placeholder="Search leads, contacts, or deals..." 
-                className="border-start-0 bg-transparent shadow-none"
-                style={{ 
-                  fontSize: '0.9rem', 
-                  color: 'var(--input-text)',
-                  borderColor: 'var(--border-color)' 
-                }}
-              />
-            </InputGroup>
-          </div>
+          {/* Animated App Title */}
+          <motion.div 
+            className="d-none d-lg-flex align-items-center ms-3"
+            initial={{ opacity: 0, y: -10, filter: 'blur(5px)' }}
+            animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
+          >
+            <span className="animated-brand-text" data-text="Customer Relationship Management System">
+              Customer Relationship Management System
+            </span>
+          </motion.div>
         </div>
 
         {/* ---- Right Side: Tools & Profile ---- */}
@@ -92,6 +85,7 @@ const Navbar = ({ toggleSidebar, isSidebarOpen }) => {
             </Dropdown.Toggle>
 
             <Dropdown.Menu 
+              renderOnMount={true}
               className="shadow-lg border mt-2 dropdown-animated" 
               style={{ 
                 minWidth: '280px', 
@@ -145,7 +139,8 @@ const Navbar = ({ toggleSidebar, isSidebarOpen }) => {
             </Dropdown.Toggle>
 
             <Dropdown.Menu 
-              className="shadow-lg border mt-2" 
+              renderOnMount={true}
+              className="shadow-lg border mt-2 dropdown-animated" 
               style={{ 
                 minWidth: '220px', 
                 backgroundColor: 'var(--surface-secondary)',

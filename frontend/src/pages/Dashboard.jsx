@@ -192,7 +192,7 @@ const Dashboard = () => {
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.5 }}
       >
-        <h1 className="page-title">Welcome back, {user?.email.split('@')[0]}! 👋</h1>
+        <h1 className="page-title">Welcome 👋</h1>
         <p className="page-subtitle">Here is what's happening with your sales pipeline today.</p>
       </motion.div>
 

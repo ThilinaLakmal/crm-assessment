@@ -11,12 +11,13 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Card, Form, Button, Alert, Spinner } from 'react-bootstrap';
 import { useAuth } from '../contexts/AuthContext';
-import { HiOutlineMail, HiOutlineLockClosed, HiOutlineSparkles } from 'react-icons/hi';
+import { HiOutlineMail, HiOutlineLockClosed, HiOutlineSparkles, HiOutlineEye, HiOutlineEyeOff } from 'react-icons/hi';
 import { motion } from 'framer-motion';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const [submitting, setSubmitting] = useState(false);
 
@@ -181,15 +182,26 @@ const Login = () => {
                         Forgot password?
                       </a>
                     </div>
-                    <Form.Control
-                      type="password"
-                      placeholder="Enter your password"
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                      className="login-glass-input"
-                      autoComplete="current-password"
-                      disabled={submitting}
-                    />
+                    <div className="position-relative">
+                      <Form.Control
+                        type={showPassword ? "text" : "password"}
+                        placeholder="Enter your password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        className="login-glass-input pe-5"
+                        autoComplete="current-password"
+                        disabled={submitting}
+                      />
+                      <button
+                        type="button"
+                        className="btn btn-link position-absolute top-50 end-0 translate-middle-y text-decoration-none border-0 p-0 me-3"
+                        onClick={() => setShowPassword(!showPassword)}
+                        style={{ color: '#a5b4fc', zIndex: 5 }}
+                        disabled={submitting}
+                      >
+                        {showPassword ? <HiOutlineEyeOff size={20} /> : <HiOutlineEye size={20} />}
+                      </button>
+                    </div>
                   </Form.Group>
 
                   {/* Submit Button */}

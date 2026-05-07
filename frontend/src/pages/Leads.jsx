@@ -14,7 +14,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   Container, Row, Col, Table, Button, Form, InputGroup,
-  Spinner, Alert, Badge, ButtonGroup,
+  Spinner, Alert, Badge, ButtonGroup, Dropdown
 } from 'react-bootstrap';
 import {
   HiOutlinePlus,
@@ -170,45 +170,75 @@ const Leads = () => {
         </Col>
 
         <Col xs={6} sm={4} md={2}>
-          <Form.Select
-            className="form-input-custom"
-            value={statusFilter}
-            onChange={(e) => setStatusFilter(e.target.value)}
-          >
-            {STATUS_OPTIONS.map((s) => (
-              <option key={s} value={s}>
-                {s === 'All' ? 'All Statuses' : s}
-              </option>
-            ))}
-          </Form.Select>
+          <Dropdown className="w-100 h-100">
+            <Dropdown.Toggle 
+              variant="link" 
+              className="w-100 h-100 d-flex justify-content-between align-items-center form-input-custom text-start text-decoration-none shadow-none"
+              id="dropdown-status"
+            >
+              <span className="text-truncate pe-2">{statusFilter === 'All' ? 'All Statuses' : statusFilter}</span>
+            </Dropdown.Toggle>
+            <Dropdown.Menu renderOnMount={true} className="w-100 shadow-lg border dropdown-animated mt-2" style={{ backgroundColor: 'var(--surface-secondary)', borderColor: 'var(--border-color)', borderRadius: '12px', zIndex: 1050 }}>
+              {STATUS_OPTIONS.map((s) => (
+                <Dropdown.Item 
+                  key={s} 
+                  active={statusFilter === s}
+                  onClick={() => setStatusFilter(s)}
+                  className="dropdown-item-custom"
+                >
+                  {s === 'All' ? 'All Statuses' : s}
+                </Dropdown.Item>
+              ))}
+            </Dropdown.Menu>
+          </Dropdown>
         </Col>
 
         <Col xs={6} sm={4} md={2}>
-          <Form.Select
-            className="form-input-custom"
-            value={sourceFilter}
-            onChange={(e) => setSourceFilter(e.target.value)}
-          >
-            {SOURCE_OPTIONS.map((s) => (
-              <option key={s} value={s}>
-                {s === 'All' ? 'All Sources' : s}
-              </option>
-            ))}
-          </Form.Select>
+          <Dropdown className="w-100 h-100">
+            <Dropdown.Toggle 
+              variant="link" 
+              className="w-100 h-100 d-flex justify-content-between align-items-center form-input-custom text-start text-decoration-none shadow-none"
+              id="dropdown-source"
+            >
+              <span className="text-truncate pe-2">{sourceFilter === 'All' ? 'All Sources' : sourceFilter}</span>
+            </Dropdown.Toggle>
+            <Dropdown.Menu renderOnMount={true} className="w-100 shadow-lg border dropdown-animated mt-2" style={{ backgroundColor: 'var(--surface-secondary)', borderColor: 'var(--border-color)', borderRadius: '12px', zIndex: 1050 }}>
+              {SOURCE_OPTIONS.map((s) => (
+                <Dropdown.Item 
+                  key={s} 
+                  active={sourceFilter === s}
+                  onClick={() => setSourceFilter(s)}
+                  className="dropdown-item-custom"
+                >
+                  {s === 'All' ? 'All Sources' : s}
+                </Dropdown.Item>
+              ))}
+            </Dropdown.Menu>
+          </Dropdown>
         </Col>
 
         <Col xs={6} sm={4} md={2}>
-          <Form.Select
-            className="form-input-custom"
-            value={salespersonFilter}
-            onChange={(e) => setSalespersonFilter(e.target.value)}
-          >
-            {SALESPERSON_OPTIONS.map((s) => (
-              <option key={s} value={s}>
-                {s === 'All' ? 'All Salespersons' : s}
-              </option>
-            ))}
-          </Form.Select>
+          <Dropdown className="w-100 h-100">
+            <Dropdown.Toggle 
+              variant="link" 
+              className="w-100 h-100 d-flex justify-content-between align-items-center form-input-custom text-start text-decoration-none shadow-none"
+              id="dropdown-salesperson"
+            >
+              <span className="text-truncate pe-2">{salespersonFilter === 'All' ? 'All Salespersons' : salespersonFilter}</span>
+            </Dropdown.Toggle>
+            <Dropdown.Menu renderOnMount={true} className="w-100 shadow-lg border dropdown-animated mt-2" style={{ backgroundColor: 'var(--surface-secondary)', borderColor: 'var(--border-color)', borderRadius: '12px', zIndex: 1050 }}>
+              {SALESPERSON_OPTIONS.map((s) => (
+                <Dropdown.Item 
+                  key={s} 
+                  active={salespersonFilter === s}
+                  onClick={() => setSalespersonFilter(s)}
+                  className="dropdown-item-custom"
+                >
+                  {s === 'All' ? 'All Salespersons' : s}
+                </Dropdown.Item>
+              ))}
+            </Dropdown.Menu>
+          </Dropdown>
         </Col>
 
         <Col xs={6} sm={12} md={2} className="d-flex justify-content-md-end">
