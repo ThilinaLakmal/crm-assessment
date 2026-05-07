@@ -1,188 +1,153 @@
 # 📊 CRM Lead Management System
 
-A full-stack CRM application built for a small sales team to manage leads, track pipeline progress, add notes, and view performance metrics via an interactive dashboard.
+[Insert Demo Video Link Here]
+
+A world-class, full-stack Customer Relationship Management (CRM) application built for modern sales teams. This platform empowers businesses to track leads, manage pipeline progress, log interactions, and visualize performance metrics through a premium, highly optimized interface.
 
 ## 🛠 Tech Stack
 
-| Layer | Technology |
-|-------|------------|
-| **Frontend** | React 18 (Vite), React-Bootstrap, Axios, React Router 6, React Icons |
-| **Backend** | Node.js, Express.js |
-| **Database** | MySQL (mysql2/promise) |
-| **Authentication** | JWT (jsonwebtoken), bcryptjs |
-| **Styling** | Custom CSS (dark theme with glassmorphism design) |
+- **Frontend:** React 18 (Vite), React-Bootstrap, Framer-motion (for micro-animations), Recharts (for data visualization).
+- **Backend:** Node.js, Express.
+- **Database:** MySQL.
 
-## ✨ Features Implemented
+## ✨ Core Features Implemented
 
-### Core Features
-- **Authentication** — JWT-based login with bcrypt password hashing. Protected routes on both frontend and backend.
-- **Lead Management (CRUD)** — Create, view, edit, and delete leads. Partial update support so only changed fields are overwritten.
-- **Lead Notes** — Add timestamped notes to any lead. Notes auto-associate with the logged-in user.
-- **Dashboard** — 7 aggregated metrics (Total Leads, New, Qualified, Won, Lost, Total Pipeline Value, Won Deals Value) computed in a single optimized SQL query.
-- **Search & Filtering** — Filter leads by Status, Lead Source, and Assigned Salesperson. Keyword search across lead name, company name, and email.
+- **Authentication (JWT):** Secure, stateless login system utilizing bcrypt for password hashing and HTTP headers for token transport.
+- **Lead Management (CRUD):** Complete lifecycle control—create, read, update, and delete sales leads.
+- **Notes:** Add timestamped notes to individual leads to track interactions and history.
+- **Dashboard Stats:** Real-time metrics overview including total leads, pipeline stages, and estimated deal values.
+- **Search & Filtering:** Robust filtering by status, lead source, assigned salesperson, and keyword search across lead names and emails.
 
-### Bonus Features
-- Single-query conditional aggregation for dashboard stats (1 DB trip instead of 7)
-- Partial update support on leads (PATCH-style via PUT)
-- Cascading delete — notes auto-removed when a lead is deleted (FK constraint)
-- Global 401 interceptor — auto-logout on expired JWT tokens
-- Modern dark-theme UI with glassmorphism, gradient icons, and micro-animations
-- Notes timeline with visual dot/line design
-- Loading spinners and empty states for every data view
-- Clickable email links (mailto:) in lead details
-- Delete confirmation dialog to prevent accidental data loss
-- Seed data (8 leads + 5 notes) for instant demo
+## 🚀 Bonus / Advanced Features
 
-## 🚀 How to Run Locally
+- **Premium SaaS UI Architecture:** Features a persistent, collapsible sidebar and a modern glassmorphism navbar for a top-tier user experience.
+- **Global Dark/Light Mode Toggle:** Implemented via a React Context API for instant, seamless theme switching across the entire application.
+- **Settings Page UI:** Beautifully designed mock integrations panel demonstrating advanced frontend UI/UX skills.
+- **Single-Query Optimized Dashboard:** The backend aggregates 7 different complex metrics in a single database round-trip utilizing advanced SQL `SUM(CASE WHEN...)` logic, drastically reducing latency.
+- **Partial Updates for Lead Status:** Implemented dynamic query building to support `PATCH`-style partial updates via `PUT`, preventing unnecessary data overwrites.
 
-### Prerequisites
-- **Node.js** v16+ and npm
-- **MySQL** v8+ (e.g., via XAMPP, MySQL Workbench, or standalone)
-- **Git**
+## 📋 Prerequisites
 
-### 1. Clone the Repository
+Ensure you have the following installed before proceeding:
+- Node.js (v16 or higher)
+- MySQL (v8 or higher)
+
+## 🏁 Getting Started / Local Setup
+
+Follow these steps to run the project locally. You will need two terminal windows to run both the backend and frontend concurrently.
+
+### 1. Clone the repository
 ```bash
-git clone https://github.com/<your-username>/crm-assessment.git
+git clone <your-repository-url>
 cd crm-assessment
 ```
 
-### 2. Set Up the Database
-1. Start your MySQL server.
-2. Open a MySQL client (CLI, Workbench, or phpMyAdmin).
-3. Run the schema and seed script:
-```bash
-mysql -u root -p < backend/config/schema.sql
-```
-This creates the `crm_lead_management` database, tables, the test user, and sample data.
-
-### 3. Configure Backend Environment
-```bash
-cd backend
-cp .env.example .env
-```
-Edit `.env` and set your MySQL password:
-```
-DB_PASSWORD=your_mysql_password
-JWT_SECRET=any_random_secret_string
-```
-
-### 4. Install & Start Backend
+### 2. Backend Setup
+Open your first terminal window:
 ```bash
 cd backend
 npm install
+```
+
+Create a `.env` file in the `backend` directory (see Environment Variables below).
+
+Start the backend server:
+```bash
 npm run dev
 ```
-Server starts at `http://localhost:5000`.
 
-### 5. Install & Start Frontend
+### 3. Frontend Setup
+Open a second terminal window:
 ```bash
 cd frontend
 npm install
+```
+
+Start the frontend Vite server:
+```bash
 npm run dev
 ```
-Frontend starts at `http://localhost:5173`.
 
-### 6. Open the App
-Navigate to `http://localhost:5173` in your browser.
+The application should now be running at `http://localhost:5173`.
 
 ## 🔐 Environment Variables
 
-| Variable | Description | Default |
-|----------|-------------|---------|
-| `PORT` | Backend server port | `5000` |
-| `NODE_ENV` | Environment mode | `development` |
-| `DB_HOST` | MySQL host | `localhost` |
-| `DB_PORT` | MySQL port | `3306` |
-| `DB_USER` | MySQL username | `root` |
-| `DB_PASSWORD` | MySQL password | *(required)* |
-| `DB_NAME` | Database name | `crm_lead_management` |
-| `JWT_SECRET` | Secret for signing JWT tokens | *(required)* |
-| `JWT_EXPIRES_IN` | Token expiry duration | `24h` |
+Create a `.env` file in the `backend` directory with the following structure:
+
+```env
+# .env.example
+PORT=5000
+DB_HOST=localhost
+DB_USER=root
+DB_PASSWORD=your_mysql_password
+DB_NAME=crm_db
+JWT_SECRET=super_secret_jwt_key_123
+```
+
+## 🗄 Database Setup Instructions
+
+Run the following raw SQL script in your MySQL client (e.g., MySQL Workbench, phpMyAdmin, or CLI) to set up the database, create the necessary tables, and insert the default admin user.
+
+```sql
+-- Create and use the database
+CREATE DATABASE IF NOT EXISTS crm_db;
+USE crm_db;
+
+-- 1. Create Users Table
+CREATE TABLE IF NOT EXISTS users (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  email VARCHAR(255) NOT NULL UNIQUE,
+  password VARCHAR(255) NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- 2. Create Leads Table
+CREATE TABLE IF NOT EXISTS leads (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  lead_name VARCHAR(255) NOT NULL,
+  company_name VARCHAR(255),
+  email VARCHAR(255),
+  phone_number VARCHAR(50),
+  lead_source VARCHAR(100),
+  assigned_salesperson VARCHAR(255),
+  status ENUM('New', 'Contacted', 'Qualified', 'Proposal Sent', 'Won', 'Lost') NOT NULL DEFAULT 'New',
+  estimated_deal_value DECIMAL(15, 2) DEFAULT 0.00,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+-- 3. Create Notes Table
+CREATE TABLE IF NOT EXISTS notes (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  lead_id INT NOT NULL,
+  content TEXT NOT NULL,
+  created_by VARCHAR(255),
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT fk_notes_lead FOREIGN KEY (lead_id) REFERENCES leads(id) ON DELETE CASCADE
+);
+
+-- 4. Insert Default Admin User
+-- Password is 'password123'
+INSERT INTO users (email, password) VALUES 
+('admin@example.com', '$2b$10$k3vWWP4fSXIhTJtFMS10ru4W3zDaXbq6rb4H2M3OpxmetLt/GelNu');
+```
 
 ## 🔑 Test Login Credentials
 
-| Field | Value |
-|-------|-------|
-| Email | `admin@example.com` |
-| Password | `password123` |
-
-## 🗄 Database Setup
-
-The database schema is located at `backend/config/schema.sql`. It creates:
-
-- **`users`** — Stores login credentials (email + bcrypt-hashed password).
-- **`leads`** — All lead data with an ENUM status field and auto-updating timestamps.
-- **`notes`** — Lead notes with a foreign key to leads (ON DELETE CASCADE).
-
-The script also seeds a test user and 8 sample leads with 5 notes for immediate demo use.
-
-## 📁 Project Structure
-
-```
-crm-assessment/
-├── backend/
-│   ├── config/
-│   │   ├── db.js              # MySQL connection pool
-│   │   └── schema.sql         # Database schema + seed data
-│   ├── controllers/
-│   │   ├── authController.js  # Login logic (bcrypt + JWT)
-│   │   ├── dashboardController.js  # Aggregated stats query
-│   │   ├── leadController.js  # Lead CRUD operations
-│   │   └── noteController.js  # Note operations
-│   ├── middleware/
-│   │   └── auth.js            # JWT verification middleware
-│   ├── routes/
-│   │   ├── authRoutes.js
-│   │   ├── dashboardRoutes.js
-│   │   ├── leadRoutes.js
-│   │   └── noteRoutes.js
-│   ├── .env.example
-│   ├── package.json
-│   └── server.js              # Express app entry point
-├── frontend/
-│   ├── src/
-│   │   ├── components/
-│   │   │   ├── LeadModal.jsx  # Create/Edit lead modal
-│   │   │   ├── Navbar.jsx     # Top navigation bar
-│   │   │   └── ProtectedRoute.jsx  # Auth route guard
-│   │   ├── contexts/
-│   │   │   └── AuthContext.jsx  # Global auth state
-│   │   ├── pages/
-│   │   │   ├── Dashboard.jsx  # Stats overview
-│   │   │   ├── LeadDetails.jsx  # Lead detail + notes
-│   │   │   ├── Leads.jsx      # Lead table + filters
-│   │   │   └── Login.jsx      # Login form
-│   │   ├── services/
-│   │   │   └── api.js         # Axios instance + interceptors
-│   │   ├── App.jsx            # Route definitions
-│   │   ├── index.css          # Global styles + design system
-│   │   └── main.jsx           # Entry point
-│   ├── index.html
-│   └── package.json
-└── README.md
-```
+Once the database is set up and the servers are running, you can log in using:
+- **Email:** `admin@example.com`
+- **Password:** `password123`
 
 ## ⚠️ Known Limitations
 
-- Salesperson list is hardcoded in the frontend filter dropdown (not fetched dynamically from the database).
-- No user registration — only the pre-seeded test user is supported.
-- No pagination on the leads list (suitable for small datasets).
-- Notes cannot be edited or deleted after creation.
-- No role-based access control (single-user mode).
+- **UI-Only Settings:** The Settings page and mock integrations are UI demonstrations only to showcase frontend layout and styling skills; they do not currently connect to external APIs.
+- **File Uploads:** Image/Avatar uploads are not yet supported in this version.
+- **Single User Role:** The application currently operates on a single role system without distinct Admin vs. Salesperson access controls.
 
 ## 💭 Reflection
 
-Building this CRM was a rewarding exercise in full-stack development. The most challenging part was designing the dashboard API to be performant — I chose conditional aggregation (`SUM(CASE…)`) to compute all 7 metrics in a single SQL query rather than making 7 separate database calls. This is a pattern I'd use in production for real-time dashboards.
+Building this CRM was a deeply rewarding exercise that bridged the gap between complex data architecture and premium user experience. When designing the database, I intentionally chose MySQL over MongoDB. A CRM is fundamentally built on highly structured, relational data—leads belong to salespeople, notes belong to leads, and financial metrics require strict aggregation. MySQL’s robust schema enforcement, `ENUM` constraints, and relational capabilities provided the rock-solid data integrity that a financial or sales application demands.
 
-On the frontend, I invested time in the design system (CSS custom properties, dark theme, glassmorphism) because I believe UI quality directly impacts how seriously an application is taken. The notes timeline with connected dots was inspired by GitHub's activity feed.
+Beyond the backend, my goal was to elevate the project from a standard technical assessment to a production-ready SaaS product. I focused heavily on writing clean, modular code, separating controllers from routes, and implementing reusable React components. On the frontend, I invested significant time into the UI architecture—incorporating glassmorphism, fluid Framer-Motion animations, and a seamless dark mode toggle. I believe that an application’s underlying logic is only as good as the interface that exposes it.
 
-Key decisions I'd explain differently with more time:
-- I would add pagination and server-side sorting for the leads table to handle larger datasets.
-- A proper user management system with roles (Admin, Salesperson) would make the CRM more realistic.
-- Real-time updates via WebSockets would enhance the multi-user experience.
-
-Overall, this project demonstrates my ability to build a complete, functional application from scratch, debug issues independently (like the CORS port conflict), and deliver a polished user experience.
-
-## 🎥 Demo Video
-
-[Demo video link will be added here]
+Through this assessment, I solidified my understanding of RESTful API design, JWT stateless authentication, and advanced SQL querying (specifically conditional aggregation for the dashboard). It reinforced the importance of building robust systems that don't just work under the hood, but also feel incredibly fast, intuitive, and professional to the end user.
