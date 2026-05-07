@@ -17,6 +17,8 @@ const authenticateToken = require('../middleware/auth');
 const {
   getNotesByLeadId,
   createNote,
+  deleteNote,
+  updateNote,
 } = require('../controllers/noteController');
 
 // Apply auth middleware to ALL note routes
@@ -24,5 +26,7 @@ router.use(authenticateToken);
 
 router.get('/', getNotesByLeadId);
 router.post('/', createNote);
+router.put('/:noteId', updateNote);
+router.delete('/:noteId', deleteNote);
 
 module.exports = router;

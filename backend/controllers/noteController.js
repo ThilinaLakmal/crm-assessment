@@ -106,7 +106,97 @@ const createNote = async (req, res) => {
   }
 };
 
+/**
+ * DELETE /api/leads/:leadId/notes/:noteId
+ * Delete a specific note.
+ */
+const deleteNote = async (req, res) => {
+  try {
+    const { leadId, noteId } = req.params;
+
+    // Verify note exists and belongs to the lead
+    const [note] = await pool.execute(
+      'SELECT id FROM notes WHERE id = ? AND lead_id = ?',
+      [noteId, leadId]
+    );
+
+    if (note.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: `Note not found for this lead.`,
+      });
+    }
+
+    // Delete note
+    await pool.execute('DELETE FROM notes WHERE id = ?', [noteId]);
+
+    return res.status(200).json({
+      success: true,
+      message: 'Note deleted successfully.',
+    });
+  } catch (error) {
+    console.error('deleteNote error:', error.message);
+    return res.status(500).json({
+      success: false,
+      message: 'Failed to delete note.',
+    });
+  }
+};
+
+/**
+ * PUT /api/leads/:leadId/notes/:noteId
+ * Update a specific note.
+ */
+const updateNote = async (req, res) => {
+  try {
+    const { leadId, noteId } = req.params;
+    const { content } = req.body;
+
+    if (!content || content.trim() === '') {
+      return res.status(400).json({
+        success: false,
+        message: 'Note content is required.',
+      });
+    }
+
+    // Verify note exists and belongs to the lead
+    const [note] = await pool.execute(
+      'SELECT id FROM notes WHERE id = ? AND lead_id = ?',
+      [noteId, leadId]
+    );
+
+    if (note.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: `Note not found for this lead.`,
+      });
+    }
+
+    // Update note
+    await pool.execute('UPDATE notes SET content = ? WHERE id = ?', [content.trim(), noteId]);
+
+    const [updatedNote] = await pool.execute(
+      'SELECT * FROM notes WHERE id = ?',
+      [noteId]
+    );
+
+    return res.status(200).json({
+      success: true,
+      message: 'Note updated successfully.',
+      data: updatedNote[0],
+    });
+  } catch (error) {
+    console.error('updateNote error:', error.message);
+    return res.status(500).json({
+      success: false,
+      message: 'Failed to update note.',
+    });
+  }
+};
+
 module.exports = {
   getNotesByLeadId,
   createNote,
+  deleteNote,
+  updateNote,
 };

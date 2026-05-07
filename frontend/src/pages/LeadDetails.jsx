@@ -27,9 +27,12 @@ import {
   HiOutlineClock,
   HiOutlinePencil,
   HiOutlineChatAlt2,
+  HiOutlineTrash,
 } from 'react-icons/hi';
 import api from '../services/api';
 import { toast } from 'react-hot-toast';
+import ConfirmModal from '../components/ConfirmModal';
+import { useAuth } from '../contexts/AuthContext';
 
 // ---- Status badge color map ----
 const STATUS_BADGE = {
@@ -63,6 +66,7 @@ const formatDate = (dateStr) => {
 const LeadDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { user } = useAuth();
 
   // ---- State ----
   const [lead, setLead] = useState(null);
@@ -74,6 +78,13 @@ const LeadDetails = () => {
   const [noteContent, setNoteContent] = useState('');
   const [submittingNote, setSubmittingNote] = useState(false);
   const [noteError, setNoteError] = useState('');
+
+  // Delete note state
+  const [noteToDelete, setNoteToDelete] = useState(null);
+  const [deletingNote, setDeletingNote] = useState(false);
+
+  // Edit note state
+  const [editingNoteId, setEditingNoteId] = useState(null);
 
   // ---- Fetch lead details ----
   const fetchLead = useCallback(async () => {
@@ -117,16 +128,50 @@ const LeadDetails = () => {
     setSubmittingNote(true);
 
     try {
-      await api.post(`/leads/${id}/notes`, { content: noteContent.trim() });
+      if (editingNoteId) {
+        await api.put(`/leads/${id}/notes/${editingNoteId}`, { content: noteContent.trim() });
+        toast.success('Note updated successfully!');
+        setEditingNoteId(null);
+      } else {
+        await api.post(`/leads/${id}/notes`, { content: noteContent.trim() });
+        toast.success('Note added successfully!');
+      }
       setNoteContent('');
-      toast.success('Note added successfully!');
       await fetchNotes(); // Refresh notes list
     } catch (err) {
-      const msg = err.response?.data?.message || 'Failed to add note.';
+      const msg = err.response?.data?.message || (editingNoteId ? 'Failed to update note.' : 'Failed to add note.');
       setNoteError(msg);
       toast.error(msg);
     } finally {
       setSubmittingNote(false);
+    }
+  };
+
+  const handleEditNoteClick = (note) => {
+    setEditingNoteId(note.id);
+    setNoteContent(note.content);
+    // Optional: scroll to top to bring input into view
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  // ---- Delete note handler ----
+  const handleDeleteNoteClick = (note) => {
+    setNoteToDelete(note);
+  };
+
+  const confirmDeleteNote = async () => {
+    if (!noteToDelete) return;
+
+    try {
+      setDeletingNote(true);
+      await api.delete(`/leads/${id}/notes/${noteToDelete.id}`);
+      toast.success('Note deleted successfully!');
+      await fetchNotes(); // Refresh notes list
+    } catch (err) {
+      toast.error(err.response?.data?.message || 'Failed to delete note.');
+    } finally {
+      setDeletingNote(false);
+      setNoteToDelete(null);
     }
   };
 
@@ -290,7 +335,7 @@ const LeadDetails = () => {
           <Card className="detail-card mb-4">
             <Card.Header className="detail-card-header">
               <HiOutlineChatAlt2 className="me-2" />
-              Add a Note
+              {editingNoteId ? 'Edit Note' : 'Add a Note'}
             </Card.Header>
             <Card.Body>
               {noteError && (
@@ -321,6 +366,8 @@ const LeadDetails = () => {
                         <Spinner as="span" animation="border" size="sm" className="me-2" />
                         Saving...
                       </>
+                    ) : editingNoteId ? (
+                      'Update Note'
                     ) : (
                       'Add Note'
                     )}
@@ -350,15 +397,39 @@ const LeadDetails = () => {
                     <div key={note.id} className="note-item">
                       <div className="note-dot" />
                       <div className="note-card">
-                        <div className="note-meta">
-                          <span className="note-author">
-                            {note.created_by || 'Unknown'}
-                          </span>
-                          <span className="note-date">
-                            {formatDate(note.created_at)}
-                          </span>
+                        <div className="note-meta d-flex align-items-start justify-content-between">
+                          <div>
+                            <span className="note-author d-block">
+                              {note.created_by || 'Unknown'}
+                            </span>
+                            <span className="note-date">
+                              {formatDate(note.created_at)}
+                            </span>
+                          </div>
+                          {user?.email === 'admin@example.com' && (
+                            <div className="d-flex gap-2">
+                              <Button 
+                                variant="link" 
+                                className="p-0 text-primary"
+                                title="Edit Note"
+                                onClick={() => handleEditNoteClick(note)}
+                                style={{ opacity: 0.8 }}
+                              >
+                                <HiOutlinePencil size={18} />
+                              </Button>
+                              <Button 
+                                variant="link" 
+                                className="p-0 text-danger"
+                                title="Delete Note"
+                                onClick={() => handleDeleteNoteClick(note)}
+                                style={{ opacity: 0.7 }}
+                              >
+                                <HiOutlineTrash size={18} />
+                              </Button>
+                            </div>
+                          )}
                         </div>
-                        <p className="note-content">{note.content}</p>
+                        <p className="note-content mt-2 mb-0">{note.content}</p>
                       </div>
                     </div>
                   ))}
@@ -368,6 +439,15 @@ const LeadDetails = () => {
           </Card>
         </Col>
       </Row>
+
+      <ConfirmModal 
+        show={!!noteToDelete}
+        onHide={() => setNoteToDelete(null)}
+        onConfirm={confirmDeleteNote}
+        title="Delete Note"
+        message="Are you sure you want to delete this note?\nThis action cannot be undone."
+        isProcessing={deletingNote}
+      />
     </Container>
   );
 };

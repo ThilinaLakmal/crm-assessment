@@ -989,6 +989,7 @@ body {
 }
 
 .note-card {
+  position: relative;
   background: var(--surface-glass);
   border: 1px solid var(--border-color);
   border-radius: 10px;
