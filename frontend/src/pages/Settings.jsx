@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Container, Row, Col, Tab, Nav, Form, Button } from 'react-bootstrap';
+import { useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { 
   HiOutlineUser, 
@@ -19,6 +20,18 @@ import { toast } from 'react-hot-toast';
 const Settings = () => {
   const { isDarkMode, toggleTheme } = useTheme();
   const { user } = useAuth();
+  const location = useLocation();
+  
+  // Handle tab from URL query params
+  const [activeTab, setActiveTab] = useState('account');
+
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const tab = params.get('tab');
+    if (tab) {
+      setActiveTab(tab);
+    }
+  }, [location]);
   
   // Dummy state for UI feedback
   const [isSaving, setIsSaving] = useState(false);
@@ -62,7 +75,7 @@ const Settings = () => {
         <p className="page-subtitle">Manage your account and preferences.</p>
       </div>
 
-      <Tab.Container id="settings-tabs" defaultActiveKey="account">
+      <Tab.Container id="settings-tabs" activeKey={activeTab} onSelect={(k) => setActiveTab(k)}>
         <Row>
           {/* Navigation Sidebar */}
           <Col md={3} className="mb-4 mb-md-0">

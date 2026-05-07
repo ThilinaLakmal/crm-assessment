@@ -45,7 +45,7 @@ const ConfirmModal = ({ show, onHide, onConfirm, title, message, isProcessing = 
             onClick={onConfirm}
             disabled={isProcessing}
             className="w-50 fw-semibold d-flex align-items-center justify-content-center gap-2 border-0"
-            style={{ borderRadius: '8px', background: 'linear-gradient(135deg, #ef4444, #dc2626)' }}
+            style={{ borderRadius: '10px', background: 'linear-gradient(135deg, #ef4444, #dc2626)' }}
           >
             {isProcessing ? (
               <>

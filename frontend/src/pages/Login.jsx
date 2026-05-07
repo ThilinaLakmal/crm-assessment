@@ -227,16 +227,6 @@ const Login = () => {
                   </Button>
                 </Form>
 
-                {/* Test credentials hint */}
-                <div className="text-center mt-4 pt-3 border-top" style={{ borderColor: 'rgba(255,255,255,0.1) !important' }}>
-                  <small className="d-block mb-1 text-white opacity-75">
-                    Don't have an account? <a href="#signup" className="text-decoration-none" style={{ color: '#a5b4fc' }}>Sign up</a>
-                  </small>
-                  <small className="text-white opacity-50">
-                    Test: admin@example.com / password123
-                  </small>
-                </div>
-
               </Card.Body>
             </Card>
           </motion.div>

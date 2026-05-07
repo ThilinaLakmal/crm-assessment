@@ -20,7 +20,7 @@ const Navbar = ({ toggleSidebar, isSidebarOpen, onLogoutClick }) => {
   const navigate = useNavigate();
 
   return (
-    <BSNavbar className="app-navbar border-bottom" expand="md" variant={isDarkMode ? 'dark' : 'light'} sticky="top">
+    <BSNavbar className="app-navbar" expand="md" variant={isDarkMode ? 'dark' : 'light'} sticky="top">
       <Container fluid className="px-4 d-flex justify-content-between align-items-center">
 
         {/* ---- Left Side: Hamburger & Global Search ---- */}
@@ -147,14 +147,14 @@ const Navbar = ({ toggleSidebar, isSidebarOpen, onLogoutClick }) => {
                 <p className="mb-0 fw-bold" style={{ color: 'var(--text-heading)', fontSize: '0.95rem' }}>{user?.email}</p>
                 <small className="text-muted" style={{ fontSize: '0.8rem' }}>Workspace Owner</small>
               </div>
-              <Dropdown.Item href="#profile" className="d-flex align-items-center gap-2 py-2" style={{ color: 'var(--text-primary)' }}>
+              <Dropdown.Item onClick={() => navigate('/settings?tab=account')} className="dropdown-item-custom d-flex align-items-center gap-2 py-2">
                 <HiOutlineUser size={18} /> My Profile
               </Dropdown.Item>
-              <Dropdown.Item href="#settings" className="d-flex align-items-center gap-2 py-2" style={{ color: 'var(--text-primary)' }}>
+              <Dropdown.Item onClick={() => navigate('/settings')} className="dropdown-item-custom d-flex align-items-center gap-2 py-2">
                 <HiOutlineCog size={18} /> Workspace Settings
               </Dropdown.Item>
               <Dropdown.Divider style={{ borderColor: 'var(--border-color)' }} />
-              <Dropdown.Item onClick={onLogoutClick} className="text-danger d-flex align-items-center gap-2 py-2 fw-medium">
+              <Dropdown.Item onClick={onLogoutClick} className="dropdown-item-custom text-danger d-flex align-items-center gap-2 py-2 fw-medium">
                 <HiOutlineLogout size={18} /> Sign Out
               </Dropdown.Item>
             </Dropdown.Menu>
