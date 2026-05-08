@@ -1,12 +1,4 @@
-/**
- * ============================================
- * Dashboard Controller
- * ============================================
- * Aggregates lead statistics for the dashboard UI.
- * Uses a single SQL query with conditional aggregation
- * (SUM + CASE) for maximum efficiency — one DB round-trip
- * instead of seven separate queries.
- */
+
 
 const pool = require('../config/db');
 
